@@ -2,6 +2,8 @@ import argparse
 import time
 from pathlib import Path
 
+import numpy as np
+
 import cv2
 import torch
 import torch.backends.cudnn as cudnn
@@ -95,6 +97,10 @@ def detect(save_img=False):
         # Apply Classifier
         if classify:
             pred = apply_classifier(pred, modelc, img, im0s)
+
+        # get rid of all but smallest and largest detections by area
+        areas = np.prod(pred[0][:,2:4].numpy(),axis=1)
+        pred[0] = pred[0][(np.argmax(areas),np.argmin(areas)),:]
 
         # Process detections
         for i, det in enumerate(pred):  # detections per image

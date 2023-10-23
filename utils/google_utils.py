@@ -18,8 +18,9 @@ def gsutil_getsize(url=''):
 
 def attempt_download(file, repo='WongKinYiu/yolov7'):
     # Attempt file download if does not exist
+    print(type(file))
     file = Path(str(file).strip().replace("'", '').lower())
-
+    print(type(file))
     if not file.exists():
         try:
             response = requests.get(f'https://api.github.com/repos/{repo}/releases/latest').json()  # github api
